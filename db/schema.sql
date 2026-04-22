@@ -66,7 +66,8 @@ CREATE TABLE IF NOT EXISTS positions (
   order_finished_at TIMESTAMPTZ
 );
 
-CREATE VIEW IF NOT EXISTS pnl_history AS
+DROP VIEW IF EXISTS pnl_history;
+CREATE VIEW pnl_history AS
 SELECT id, commodity, side, entry_price, exit_price, pnl, order_created_at, order_finished_at
 FROM positions
 WHERE status = 'CLOSED';

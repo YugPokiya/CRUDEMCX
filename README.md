@@ -6,6 +6,7 @@ This repository includes:
 - TensorFlow RNN/LSTM pipeline (`ml/`)
 - PostgreSQL schema (`db/`)
 - Design docs and requirements (`docs/`)
+- Cloud deployment assets (`infra/terraform/`, Dockerfiles)
 
 ## Data Pipeline (Bronze → Silver → Gold)
 The ML pipeline now implements explicit medallion layers:
@@ -18,5 +19,42 @@ The ML pipeline now implements explicit medallion layers:
 2. `cd backend && cargo run`
 3. `cd frontend && npm install && npm run dev`
 4. `python ml/pipeline.py --csv data/raw_ohlcv.csv --data-dir data --epochs 20`
+
+## Deploy full stack on AWS
+1. Build and push container images:
+   - `backend/Dockerfile`
+   - `ml/Dockerfile`
+2. Build frontend static files: `cd frontend && npm install && npm run build`
+3. Configure Terraform variables from `infra/terraform/terraform.tfvars.example`.
+4. Deploy infra: `cd infra/terraform && terraform init && terraform apply`
+5. Apply DB schema to RDS endpoint output from Terraform.
+6. Upload `frontend/dist` to S3 bucket output by Terraform.
+
+See `infra/terraform/README.md` for full deployment instructions.
+
+## Advanced PostgreSQL Medallion Pipeline (Bronze/Silver/Gold)
+Additional production-style scripts are available under `ml/medallion/`:
+
+1. Install dependencies:
+   ```bash
+   pip install -r ml/medallion/requirements.txt
+   ```
+2. Create medallion schemas/tables:
+   ```bash
+   psql -U postgres -d crudemcx -f db/schema_medallion.sql
+   ```
+3. Run Bronze ingest (raw -> bronze.ohlcv_raw):
+   ```bash
+   DB_PASSWORD=<your_password> python ml/medallion/bronze.py
+   ```
+4. Run Silver cleaning/repair (bronze -> silver.ohlcv_clean):
+   ```bash
+   DB_PASSWORD=<your_password> python ml/medallion/silver.py
+   ```
+5. Run Gold feature generation (silver -> gold.ml_features):
+   ```bash
+   DB_PASSWORD=<your_password> python ml/medallion/gold_layer.py
+   ```
+
 
 See `docs/Software_Nededd.pdf` for software requirements document.

@@ -32,4 +32,29 @@ The ML pipeline now implements explicit medallion layers:
 
 See `infra/terraform/README.md` for full deployment instructions.
 
+## Advanced PostgreSQL Medallion Pipeline (Bronze/Silver/Gold)
+Additional production-style scripts are available under `ml/medallion/`:
+
+1. Install dependencies:
+   ```bash
+   pip install -r ml/medallion/requirements.txt
+   ```
+2. Create medallion schemas/tables:
+   ```bash
+   psql -U postgres -d crudemcx -f db/schema_medallion.sql
+   ```
+3. Run Bronze ingest (raw -> bronze.ohlcv_raw):
+   ```bash
+   DB_PASSWORD=<your_password> python ml/medallion/bronze.py
+   ```
+4. Run Silver cleaning/repair (bronze -> silver.ohlcv_clean):
+   ```bash
+   DB_PASSWORD=<your_password> python ml/medallion/silver.py
+   ```
+5. Run Gold feature generation (silver -> gold.ml_features):
+   ```bash
+   DB_PASSWORD=<your_password> python ml/medallion/gold_layer.py
+   ```
+
+
 See `docs/Software_Nededd.pdf` for software requirements document.

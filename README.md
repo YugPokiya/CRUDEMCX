@@ -16,9 +16,10 @@ The ML pipeline now implements explicit medallion layers:
 
 ## Quick start
 1. `psql mcx_trade -f db/schema.sql`
-2. `cd backend && cargo run`
+2. `cd backend && DATABASE_URL=postgres://<user>:<pass>@<host>:5432/mcx_trade DB_ACQUIRE_TIMEOUT_SECS=8 BIND_ADDR=0.0.0.0:8080 BIND_RETRY_PORTS=20 cargo run` (if the base port is busy, backend auto-tries the next ports)
 3. `cd frontend && npm install && npm run dev`
 4. `python ml/pipeline.py --csv data/raw_ohlcv.csv --data-dir data --epochs 20`
+5. `curl http://localhost:8080/health/db` to verify database connectivity separately from API boot.
 
 ## Deploy full stack on AWS
 1. Build and push container images:

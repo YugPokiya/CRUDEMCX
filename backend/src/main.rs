@@ -67,8 +67,9 @@ async fn main() -> anyhow::Result<()> {
         .route("/api/positions/:id/exit", post(close_position))
         .with_state(app_state);
 
-    let listener = tokio::net::TcpListener::bind("0.0.0.0:8080").await?;
-    info!("Backend listening on 0.0.0.0:8080");
+    let bind_addr = env::var("BIND_ADDR").unwrap_or_else(|_| "0.0.0.0:8080".to_string());
+    let listener = tokio::net::TcpListener::bind(&bind_addr).await?;
+    info!("Backend listening on {bind_addr}");
     axum::serve(listener, app).await?;
     Ok(())
 }

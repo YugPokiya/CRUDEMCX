@@ -1,0 +1,15 @@
+{
+  "broker": "smartapi",
+  "symbol": "CRUDEOIL",
+  "signal": "BUY",
+  "confidence": 0.5834,
+  "probabilities": {
+    "SELL": 0.3341,
+    "HOLD": 0.0824,
+    "BUY": 0.5834
+  },
+  "price": 105.41999816894533,
+  "stop_loss": 97.7031,
+  "target": 116.9953,
+  "timestamp": "2026-05-21T14:34:46.451741+00:00"
+}

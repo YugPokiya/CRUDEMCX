@@ -21,7 +21,7 @@ import argparse
 import json
 from dataclasses import dataclass
 from pathlib import Path
-
+import logging as lg
 import numpy as np
 import pandas as pd
 import tensorflow as tf
@@ -138,7 +138,7 @@ def generate_signal(artifacts: PhysicsArtifacts, df: pd.DataFrame, symbol: str) 
 
 def main() -> None:
     ap = argparse.ArgumentParser(description="Physics ANN signal generator for SmartAPI")
-    ap.add_argument("--csv", required=True)
+    ap.add_argument("--csv",default="ml4t_crude_oil_4yr", required=True)
     ap.add_argument("--symbol", default="CRUDEOIL")
     ap.add_argument("--epochs", type=int, default=25)
     ap.add_argument("--model-out", default="models/physics_ann.keras")

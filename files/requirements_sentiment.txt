@@ -1,0 +1,19 @@
+# CRUDEMCX FinBERT Sentiment Pipeline — requirements
+# Install: pip install -r requirements_sentiment.txt
+
+# Core ML
+torch>=2.0.0
+transformers>=4.38.0
+
+# Data
+pandas>=2.0.0
+numpy>=1.24.0
+
+# News fetching
+requests>=2.31.0
+
+# Progress
+tqdm>=4.66.0
+
+# Optional: GPU acceleration (uncomment if CUDA available)
+# torch-cuda>=2.0.0

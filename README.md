@@ -21,6 +21,20 @@ The ML pipeline now implements explicit medallion layers:
 4. `python ml/pipeline.py --csv data/raw_ohlcv.csv --data-dir data --epochs 20`
 5. `curl http://localhost:8080/health/db` to verify database connectivity separately from API boot.
 
+
+## Telegram signal bot
+A Telegram bot template is available under `telegram_bot/` with inline market options for Gold, Silver, BTC, and ETH.
+
+Quick start:
+```bash
+cd telegram_bot
+python -m pip install -r requirements.txt
+export TELEGRAM_BOT_TOKEN=<your-botfather-token>
+python bot.py
+```
+
+Use `/start` or `/menu` in Telegram to open the market template menu.
+
 ## Deploy full stack on AWS
 1. Build and push container images:
    - `backend/Dockerfile`
